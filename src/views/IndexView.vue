@@ -14,7 +14,9 @@
      v-bind:label="user != null ? user.email : ''"
     ></q-badge>
     <q-btn flat round dense icon="logout" tool @click="sair">
-     <q-tooltip class="bg-red text-white" :offset="[10, 10]"> Sair do App </q-tooltip>
+     <q-tooltip class="bg-red text-white" :offset="[10, 10]">
+      Sair do App
+     </q-tooltip>
     </q-btn>
    </q-toolbar>
    <q-tabs
@@ -104,23 +106,24 @@ export default {
   );
   TarefaService.init((dados) => {
    this.tarefas = [];
-   Object.keys(dados).forEach((key) => {
-    this.tarefas.push({
-     key: key,
-     descricao: dados[key].descricao,
-     dataCadastro: dados[key].dataCadastro,
-    });
-   });
   });
+  this.todas();
  },
  methods: {
+  todas() {
+   TarefaService.recupera((dados) => {
+    this.tarefas = [];
+    if (dados) {
+     this.tarefas = dados;
+    }
+   });
+  },
   sair() {
    AuthService.deslogar(() => {
     this.$router.push({ path: "/login" });
    });
   },
   cadTarefa() {
-   this.tarefas = [];
    TarefaService.cadastra(
     this.tarefa,
     () => {
@@ -130,6 +133,7 @@ export default {
        message: `Dados cadastrados com sucesso!`,
       })
       .onOk(() => {
+       this.todas();
        this.tab = "lista";
       });
     },
@@ -146,17 +150,18 @@ export default {
     .dialog({
      title: "ATENÇÃO",
      message: `Deseja realmente excluir essa tarefa?`,
-     cancel: 'Não',
-     ok: 'Sim',
+     cancel: "Não",
+     ok: "Sim",
      persistent: true,
      color: "white",
      class: "bg-orange",
     })
     .onOk(() => {
-     this.tarefas = [];
      TarefaService.exclui(
       k,
-      () => {},
+      () => {
+       this.todas();
+      },
       (e) => {
        console.error("Erro ao remover:", e);
       }

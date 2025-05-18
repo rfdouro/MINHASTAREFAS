@@ -1,6 +1,4 @@
-import firebaseConfig from "../data/firebase.conf";
 // Importações dos módulos do Firebase
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
 import {
   getDatabase,
   ref,
@@ -8,13 +6,16 @@ import {
   set,
   onValue,
   remove,
-} from "https://www.gstatic.com/firebasejs/11.7.1/firebase-database.js";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+  query,
+  orderByKey,
+  limitToFirst,
+  startAt,
+  orderByValue,
+  orderByChild,
+  equalTo,
+  get,
+} from "@firebase/database";
+
 import FBService from "./FBService";
 
 class TarefaService {
@@ -23,15 +24,27 @@ class TarefaService {
   static init(cbOk) {
     // Referência para o nó no banco de dados
     TarefaService.tarefasRef = ref(FBService.database, "tarefas");
+  }
 
-    // Ler dados
-    onValue(TarefaService.tarefasRef, (snapshot) => {
-      const dados = snapshot.val();
-      if (dados) {
-        console.log(dados);
-        cbOk(dados);
-      }
-    });
+  static recupera(cbOk, filtroStart) {
+    let tarefas = query(TarefaService.tarefasRef, orderByChild("descricao"));
+    if (filtroStart) tarefas = query(tarefas, startAt(filtroStart));
+    get(tarefas)
+      .then((snapshot) => {
+        const dados = snapshot.val();
+        if (dados) {
+          const dadosArray = Object.entries(dados).map(([key, value]) => ({
+            key: key, // Adiciona a chave como um campo "id"
+            ...value, // Espalha os demais campos
+          }));
+          cbOk(dadosArray);
+        }else{
+          cbOk([]);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   static cadastra(tarefa, cbOk, cbNotOk) {
@@ -52,7 +65,7 @@ class TarefaService {
 
   static exclui(k, cbOk, cbNotOk) {
     remove(ref(FBService.database, `tarefas/${k.key}`))
-      .then(() => cbOk)
+      .then(() => cbOk())
       .catch((error) => cbNotOk(error));
   }
 }

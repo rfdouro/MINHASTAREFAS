@@ -1,19 +1,10 @@
 // Importações dos módulos do Firebase
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
-import {
-  getDatabase,
-  ref,
-  push,
-  set,
-  onValue,
-  remove,
-} from "https://www.gstatic.com/firebasejs/11.7.1/firebase-database.js";
 import {
   getAuth,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-} from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+} from "@firebase/auth"
 
 import FBService from "./FBService";
 
@@ -28,7 +19,6 @@ class AuthService {
         }
         // https://firebase.google.com/docs/reference/js/auth.user
         const uid = AuthService.user.uid;
-        console.log(AuthService.user);
         cbOk();
       } else {
         // User is signed out
@@ -46,7 +36,7 @@ class AuthService {
       );
 
       if (result.user) {
-        console.log("Login bem-sucedido:", result.user.email);
+        //result.user.email
         cbOk();
       } else {
         cbNotOk();

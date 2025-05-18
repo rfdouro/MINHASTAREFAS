@@ -1,6 +1,6 @@
 import firebaseConfig from "../data/firebase.conf";
 // Importações dos módulos do Firebase
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+import { initializeApp } from "@firebase/app"// "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
 import {
   getDatabase,
   ref,
@@ -8,13 +8,13 @@ import {
   set,
   onValue,
   remove,
-} from "https://www.gstatic.com/firebasejs/11.7.1/firebase-database.js";
+} from "@firebase/database"// "https://www.gstatic.com/firebasejs/11.7.1/firebase-database.js";
 import {
   getAuth,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-} from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+} from "@firebase/auth"// "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
 
 class FBService {
   static fbconf = firebaseConfig.firebaseConfig;
