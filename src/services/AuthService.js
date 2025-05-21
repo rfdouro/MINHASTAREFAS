@@ -4,7 +4,8 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-} from "@firebase/auth"
+  updatePassword,
+} from "@firebase/auth";
 
 import FBService from "./FBService";
 
@@ -42,12 +43,27 @@ class AuthService {
         cbNotOk();
       }
     } catch (e) {
-     cbNotOk(e);
+      cbNotOk(e);
     }
   }
 
   static deslogar(cbOk) {
     signOut(FBService.auth).then(cbOk);
+  }
+
+  static atualizaSenha(novaSenha, cbOk, cbNotOk) {
+    const auth = getAuth();
+
+    const user = auth.currentUser;
+    const newPassword = novaSenha;
+
+    updatePassword(user, newPassword)
+      .then(() => {
+        cbOk();
+      })
+      .catch((error) => {
+        cbNotOk(error);
+      });
   }
 }
 

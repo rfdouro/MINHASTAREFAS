@@ -6,7 +6,7 @@
      <q-avatar>
       <img src="@/assets/mytasks.png" />
      </q-avatar>
-     Acesso
+     Alterar Senha
     </q-tsolbar-title>
    </q-toolbar>
   </q-header>
@@ -29,7 +29,19 @@
         filled
         type="password"
         v-model="senha"
-        label="Senha *"
+        label="Senha Atual *"
+        lazy-rules
+        :rules="[
+         (val) => (val !== null && val !== '') || 'Por favor digite a senha',
+         (val) => val.length >= 6 || 'Mínimo de 6 caracteres',
+        ]"
+       ></q-input>
+
+       <q-input
+        filled
+        type="password"
+        v-model="novasenha"
+        label="Nova Senha *"
         lazy-rules
         :rules="[
          (val) => (val !== null && val !== '') || 'Por favor digite a senha',
@@ -38,7 +50,7 @@
        ></q-input>
 
        <div>
-        <q-btn label="Acessar" type="submit" color="primary"></q-btn>
+        <q-btn label="Alterar" type="submit" color="primary"></q-btn>
         <q-btn
          label="Resetar"
          type="reset"
@@ -64,6 +76,8 @@ export default {
   return {
    email: "",
    senha: "",
+   novasenha: "",
+   user: null,
   };
  },
  mounted() {
@@ -71,11 +85,14 @@ export default {
   FBService.init();
   AuthService.verificaLogado(
    () => {
-    this.$router.push({ path: "/index" });
+    this.user = AuthService.user;
+    console.log(this.user.email);
+    this.email = this.user.email;
     this.$q.loading.hide();
    },
    () => {
     this.$q.loading.hide();
+    this.$router.push({ path: "/login" });
    }
   );
  },
@@ -88,15 +105,34 @@ export default {
     email,
     password,
     () => {
-     this.$q.loading.hide();
-     this.$router.push({ path: "/index" });
+     AuthService.atualizaSenha(
+      this.novasenha,
+      () => {
+       this.$q
+        .dialog({
+         title: "Alterado",
+         message: `Senha alterada com sucesso`,
+        })
+        .onOk(() => {
+         this.$router.push({ path: "/index" });
+        });
+        this.$q.loading.hide();
+      },
+      (e) => {
+       this.$q.dialog({
+        title: "ERRO",
+        message: `Erro nos dados de alteração ${e}`,
+       });
+       this.$q.loading.hide();
+      }
+     );
     },
     (e) => {
      this.$q.loading.hide();
      this.$q
       .dialog({
        title: "ERRO",
-       message: `Erro ao logar ${e}`,
+       message: `Erro nos dados atuais ${e}`,
       })
       .onOk(() => {
        // console.log('OK')

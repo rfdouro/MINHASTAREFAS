@@ -13,6 +13,11 @@
      class=""
      v-bind:label="user != null ? user.email : ''"
     ></q-badge>
+    <q-btn flat round dense icon="lock_reset" tool @click="abreAltera">
+     <q-tooltip class="bg-green text-white" :offset="[10, 10]">
+      Alterar senha
+     </q-tooltip>
+    </q-btn>
     <q-btn flat round dense icon="logout" tool @click="sair">
      <q-tooltip class="bg-red text-white" :offset="[10, 10]">
       Sair do App
@@ -112,6 +117,9 @@ export default {
   this.todas();
  },
  methods: {
+  abreAltera(){
+    this.$router.push('alterasenha');
+  },
   todas() {
    this.$q.loading.show();
    TarefaService.recupera((dados) => {
