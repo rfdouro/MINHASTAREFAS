@@ -3,11 +3,42 @@
   <q-header elevated class="bg-primary text-white" height-hint="98">
    <q-toolbar>
     <q-toolbar-title>
-     <q-avatar>
+     <q-avatar >
       <img src="@/assets/mytasks.png" />
      </q-avatar>
      Tarefas
     </q-toolbar-title>
+
+    <q-btn-dropdown
+     :label="user != null ? user.email : ''"
+     color="white"
+     push
+     flat
+     no-caps
+     icon="account_circle"
+    >
+     <q-list>
+      <q-item clickable v-close-popup @click="abreAltera" class="text-primary">
+       <q-item-section>
+        <q-item-label>Alterar Senha</q-item-label>
+       </q-item-section>
+       <q-item-section side>
+        <q-icon name="lock_reset" color="primary" />
+       </q-item-section>
+      </q-item>
+
+      <q-item clickable v-close-popup @click="sair" class="bg-red text-white">
+       <q-item-section>
+        <q-item-label>Sair</q-item-label>
+       </q-item-section>
+       <q-item-section side>
+        <q-icon name="logout" color="white" />
+       </q-item-section>
+      </q-item>
+     </q-list>
+    </q-btn-dropdown>
+
+<!--
     <q-badge
      color="teal"
      class=""
@@ -23,6 +54,7 @@
       Sair do App
      </q-tooltip>
     </q-btn>
+    -->
    </q-toolbar>
    <q-tabs
     v-model="tab"
@@ -117,8 +149,8 @@ export default {
   this.todas();
  },
  methods: {
-  abreAltera(){
-    this.$router.push('alterasenha');
+  abreAltera() {
+   this.$router.push("alterasenha");
   },
   todas() {
    this.$q.loading.show();

@@ -52,9 +52,9 @@
        <div>
         <q-btn label="Alterar" type="submit" color="primary"></q-btn>
         <q-btn
-         label="Resetar"
+         label="Cancelar"
          type="reset"
-         color="primary"
+         color="orange"
          flat
          class="q-ml-sm"
         ></q-btn>
@@ -149,6 +149,7 @@ export default {
   onReset() {
    this.email = "";
    this.password = "";
+   this.$router.push("index");
   },
  },
 };
