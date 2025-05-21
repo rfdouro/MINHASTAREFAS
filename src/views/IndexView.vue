@@ -95,10 +95,12 @@ export default {
  },
  beforeCreate() {},
  mounted() {
+  this.$q.loading.show();
   FBService.init();
   AuthService.verificaLogado(
    () => {
     this.user = AuthService.user;
+    this.$q.loading.hide();
    },
    () => {
     this.$router.push({ path: "/login" });
@@ -111,11 +113,13 @@ export default {
  },
  methods: {
   todas() {
+   this.$q.loading.show();
    TarefaService.recupera((dados) => {
     this.tarefas = [];
     if (dados) {
      this.tarefas = dados;
     }
+    this.$q.loading.hide();
    });
   },
   sair() {

@@ -70,12 +70,16 @@ export default {
   };
  },
  mounted() {
+  this.$q.loading.show();
   FBService.init();
   AuthService.verificaLogado(
    () => {
     this.$router.push({ path: "/index" });
+    this.$q.loading.hide();
    },
-   () => {}
+   () => {
+    this.$q.loading.hide();
+   }
   );
  },
  methods: {

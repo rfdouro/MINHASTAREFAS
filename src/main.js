@@ -2,7 +2,7 @@ import "./assets/main.css";
 
 import { createApp } from "vue";
 
-import { Quasar, Dialog } from "quasar";
+import { Quasar, Dialog, Loading, LoadingBar } from "quasar";
 import quasarLang from "quasar/lang/pt-BR";
 
 import "@quasar/extras/roboto-font/roboto-font.css";
@@ -18,8 +18,18 @@ const app = createApp(App);
 app.use(router);
 
 app.use(Quasar, {
-  plugins: { Dialog }, // import Quasar plugins and add here
+  plugins: { Dialog, Loading, LoadingBar }, // import Quasar plugins and add here
   lang: quasarLang,
+  config: {
+    loading: {
+      spinnerColor: "amber",
+    },
+    loadingBar: {
+      color: "primary",
+      skipHijack: true,
+      size: "20px",
+    },
+  },
 });
 
 app.mount("#app");
