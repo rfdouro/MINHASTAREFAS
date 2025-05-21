@@ -1,6 +1,5 @@
 <template>
  <q-layout view="hHh lpr fFf" class="fullscreen">
-  
   <q-header elevated class="bg-primary text-white" height-hint="98">
    <q-toolbar>
     <q-tsolbar-title>
@@ -13,8 +12,7 @@
   </q-header>
 
   <q-page-container>
-   <q-page class="row q-pa-md ">
-
+   <q-page class="row q-pa-md">
     <div class="offset-0 col-12 offset-md-3 col-md-6">
      <q-card class="q-pa-md">
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
@@ -52,7 +50,6 @@
       </q-form>
      </q-card>
     </div>
-
    </q-page>
   </q-page-container>
  </q-layout>
@@ -86,14 +83,16 @@ export default {
   async onSubmit() {
    const email = this.email;
    const password = this.senha;
-
+   this.$q.loading.show();
    await AuthService.logar(
     email,
     password,
     () => {
+     this.$q.loading.hide();
      this.$router.push({ path: "/index" });
     },
     (e) => {
+     this.$q.loading.hide();
      this.$q
       .dialog({
        title: "ERRO",
@@ -111,10 +110,10 @@ export default {
     }
    );
   },
-  onReset(){
-    this.email = '';
-    this.password = '';
-  }
+  onReset() {
+   this.email = "";
+   this.password = "";
+  },
  },
 };
 </script>
