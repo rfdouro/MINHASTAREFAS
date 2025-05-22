@@ -30,8 +30,8 @@
   </q-header>
 
   <q-page-container>
-   <q-tab-panels v-model="tab" animated class="row q-pa-md">
-    <q-tab-panel name="lista">
+   <q-tab-panels v-model="tab" animated class="row q-pa-md" swipeable>
+    <q-tab-panel name="lista" draggable>
      <div class="text-h6">Tarefas</div>
      <div class="q-pa-md">
       <q-list bordered separator>
@@ -51,7 +51,7 @@
      </div>
     </q-tab-panel>
 
-    <q-tab-panel name="cadastro">
+    <q-tab-panel name="cadastro" draggable>
      <div class="text-h6">Nova Tarefa</div>
      <div class="q-gutter-md">
       <q-input
