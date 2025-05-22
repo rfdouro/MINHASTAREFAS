@@ -14,7 +14,6 @@
      :funAltera="abreAltera"
      :funSair="sair"
     ></DropDownUser>
-
    </q-toolbar>
    <q-tabs
     v-model="tab"
@@ -30,8 +29,11 @@
   </q-header>
 
   <q-page-container>
-   <q-tab-panels v-model="tab" animated class="row q-pa-md" swipeable>
-    <q-tab-panel name="lista" draggable>
+   <q-tab-panels v-model="tab" animated class="row q-pa-md" swipeable draggable>
+    <q-tab-panel
+     name="lista"
+     v-touch-swipe.mouse.right.left="handleSwipe" draggable
+    >
      <div class="text-h6">Tarefas</div>
      <div class="q-pa-md">
       <q-list bordered separator>
@@ -51,7 +53,10 @@
      </div>
     </q-tab-panel>
 
-    <q-tab-panel name="cadastro" draggable>
+    <q-tab-panel
+     name="cadastro"
+     v-touch-swipe.mouse.right.left="handleSwipe" draggable
+    >
      <div class="text-h6">Nova Tarefa</div>
      <div class="q-gutter-md">
       <q-input
@@ -113,6 +118,11 @@ export default {
   this.todas();
  },
  methods: {
+  handleSwipe({ evt, ...newInfo }) {
+   // native Javascript event
+   console.log(evt);
+   console.log(newInfo);
+  },
   abreAltera() {
    this.$router.push("alterasenha");
   },
