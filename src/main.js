@@ -22,7 +22,7 @@ app.use(Quasar, {
   lang: quasarLang,
   config: {
     loading: {
-      spinnerColor: "amber",
+      spinnerColor: "primary",
     },
     loadingBar: {
       color: "primary",

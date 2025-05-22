@@ -19,7 +19,7 @@
      </q-item-section>
     </q-item>
 
-    <q-item clickable v-close-popup @click="funSair" class="bg-red text-white">
+    <q-item clickable v-close-popup @click="funSair" class="bg-primary text-white">
      <q-item-section>
       <q-item-label>Sair</q-item-label>
      </q-item-section>
@@ -49,7 +49,7 @@
      </q-item-section>
     </q-item>
 
-    <q-item clickable v-close-popup @click="funSair" class="bg-red text-white">
+    <q-item clickable v-close-popup @click="funSair" class="bg-primary text-white">
      <q-item-section>
       <q-item-label>Sair</q-item-label>
      </q-item-section>
