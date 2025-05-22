@@ -3,58 +3,18 @@
   <q-header elevated class="bg-primary text-white" height-hint="98">
    <q-toolbar>
     <q-toolbar-title>
-     <q-avatar >
+     <q-avatar>
       <img src="@/assets/mytasks.png" />
      </q-avatar>
      Tarefas
     </q-toolbar-title>
 
-    <q-btn-dropdown
-     :label="user != null ? user.email : ''"
-     color="white"
-     push
-     flat
-     no-caps
-     icon="account_circle"
-    >
-     <q-list>
-      <q-item clickable v-close-popup @click="abreAltera" class="text-primary">
-       <q-item-section>
-        <q-item-label>Alterar Senha</q-item-label>
-       </q-item-section>
-       <q-item-section side>
-        <q-icon name="lock_reset" color="primary" />
-       </q-item-section>
-      </q-item>
+    <DropDownUser
+     :user="user"
+     :funAltera="abreAltera"
+     :funSair="sair"
+    ></DropDownUser>
 
-      <q-item clickable v-close-popup @click="sair" class="bg-red text-white">
-       <q-item-section>
-        <q-item-label>Sair</q-item-label>
-       </q-item-section>
-       <q-item-section side>
-        <q-icon name="logout" color="white" />
-       </q-item-section>
-      </q-item>
-     </q-list>
-    </q-btn-dropdown>
-
-<!--
-    <q-badge
-     color="teal"
-     class=""
-     v-bind:label="user != null ? user.email : ''"
-    ></q-badge>
-    <q-btn flat round dense icon="lock_reset" tool @click="abreAltera">
-     <q-tooltip class="bg-green text-white" :offset="[10, 10]">
-      Alterar senha
-     </q-tooltip>
-    </q-btn>
-    <q-btn flat round dense icon="logout" tool @click="sair">
-     <q-tooltip class="bg-red text-white" :offset="[10, 10]">
-      Sair do App
-     </q-tooltip>
-    </q-btn>
-    -->
    </q-toolbar>
    <q-tabs
     v-model="tab"
@@ -118,8 +78,12 @@
 import FBService from "@/services/FBService.js";
 import AuthService from "@/services/AuthService.js";
 import TarefaService from "@/services/TarefaService.js";
+import DropDownUser from "@/components/DropDownUser.vue";
 
 export default {
+ components: {
+  DropDownUser,
+ },
  data() {
   return {
    user: null,
