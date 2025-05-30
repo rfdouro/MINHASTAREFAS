@@ -32,21 +32,53 @@
    <q-tab-panels v-model="tab" animated class="row q-pa-md" swipeable draggable>
     <q-tab-panel
      name="lista"
-     v-touch-swipe.mouse.right.left="handleSwipe" draggable
+     v-touch-swipe.mouse.right.left="handleSwipe"
+     draggable
     >
      <div class="text-h6">Tarefas</div>
-     <div class="q-pa-md">
+     <div class="q-gutter-md">
       <q-list bordered separator>
        <q-item
-        clickable
-        v-ripple
+        :clickable="false"
+        v-ripple="false"
         v-for="t in tarefas"
         v-bind:key="t.key"
-        @click="exclui(t)"
        >
         <q-item-section>
          <q-item-label>{{ t.descricao }}</q-item-label>
          <q-item-label caption>{{ t.dataCadastro }}</q-item-label>
+        </q-item-section>
+        <q-item-section side class="gt-xs">
+         <q-btn-group push>
+          <q-btn
+           label="Alterar"
+           icon="update"
+           color="green"
+           @click="
+            tarefa = t;
+            diagaltera = true;
+           "
+          ></q-btn>
+          <q-btn
+           label="Excluir"
+           icon="delete"
+           color="red"
+           @click="exclui(t)"
+          ></q-btn>
+         </q-btn-group>
+        </q-item-section>
+        <q-item-section side class="lt-sm">
+         <q-btn-group push>
+          <q-btn
+           icon="update"
+           color="green"
+           @click="
+            tarefa = t;
+            diagaltera = true;
+           "
+          ></q-btn>
+          <q-btn icon="delete" color="red" @click="exclui(t)"></q-btn>
+         </q-btn-group>
         </q-item-section>
        </q-item>
       </q-list>
@@ -55,26 +87,67 @@
 
     <q-tab-panel
      name="cadastro"
-     v-touch-swipe.mouse.right.left="handleSwipe" draggable
+     v-touch-swipe.mouse.right.left="handleSwipe"
+     draggable
     >
-     <div class="text-h6">Nova Tarefa</div>
-     <div class="q-gutter-md">
-      <q-input
-       filled
-       type="text"
-       v-model="tarefa.descricao"
-       label="Descrição *"
-       hint="Descrição"
-       lazy-rules
-       :rules="[(val) => (val && val.length > 0) || 'Digite uma descrição']"
-      ></q-input>
-      <div>
-       <q-btn label="Salvar" color="primary" @click="cadTarefa"></q-btn>
-       <q-btn label="Cancelar" color="primary" flat class="q-ml-sm"></q-btn>
+     <q-card class="bg-blue-1 q-pa-md">
+      <div class="text-h6">Nova Tarefa</div>
+      <div class="q-gutter-md">
+       <q-input
+        filled
+        type="text"
+        v-model="tarefa.descricao"
+        label="Descrição *"
+        hint="Descrição da tarefa"
+        lazy-rules
+        :rules="[(val) => (val && val.length > 0) || 'Digite uma descrição']"
+       ></q-input>
+       <div>
+        <q-btn label="Salvar" color="primary" @click="cadTarefa"></q-btn>
+        <q-btn label="Cancelar" color="primary" flat class="q-ml-sm"></q-btn>
+       </div>
       </div>
-     </div>
+     </q-card>
     </q-tab-panel>
    </q-tab-panels>
+
+   <q-dialog v-model="diagaltera" persistent>
+    <q-card style="width: 700px; max-width: 80vw" class="bg-green-3">
+     <q-card-section>
+      <div class="text-h6">Tarefa</div>
+     </q-card-section>
+
+     <q-card-section class="q-pt-none">
+      <div class="q-gutter-md">
+       <q-input
+        color="white"
+        filled
+        type="text"
+        v-model="tarefa.descricao"
+        label="Descrição *"
+        hint="Descrição da tarefa"
+        lazy-rules
+        :rules="[(val) => (val && val.length > 0) || 'Digite uma descrição']"
+       ></q-input>
+      </div>
+     </q-card-section>
+
+     <q-card-actions align="right" class="bg-green-2">
+      <q-btn label="Alterar" v-close-popup @click="atualiza" />
+      <q-btn
+       flat
+       label="Fechar"
+       v-close-popup
+       @click="
+        () => {
+         limpa();
+         todas();
+        }
+       "
+      />
+     </q-card-actions>
+    </q-card>
+   </q-dialog>
   </q-page-container>
  </q-layout>
 </template>
@@ -97,6 +170,7 @@ export default {
     descricao: "",
    },
    tarefas: [],
+   diagaltera: false,
   };
  },
  beforeCreate() {},
@@ -123,10 +197,16 @@ export default {
    console.log(evt);
    console.log(newInfo);
   },
+  limpa() {
+   this.tarefa = {
+    descricao: "",
+   };
+  },
   abreAltera() {
    this.$router.push("alterasenha");
   },
   todas() {
+   this.limpa();
    this.$q.loading.show();
    TarefaService.recupera((dados) => {
     this.tarefas = [];
@@ -156,6 +236,7 @@ export default {
       });
     },
     (e) => {
+     this.limpa();
      this.$q.dialog({
       title: "ERRO",
       message: `${e}`,
@@ -172,19 +253,52 @@ export default {
      ok: "Sim",
      persistent: true,
      color: "white",
-     class: "bg-orange",
+     class: "bg-red text-white",
     })
     .onOk(() => {
      TarefaService.exclui(
       k,
       () => {
-       this.todas();
+       this.$q
+        .dialog({
+         title: "SUCESSO",
+         message: `Dados excluídos com sucesso!`,
+        })
+        .onOk(() => {
+         this.todas();
+         this.tab = "lista";
+        });
       },
       (e) => {
+       this.limpa();
        console.error("Erro ao remover:", e);
       }
      );
     });
+  },
+  atualiza() {
+   if (this.tarefa.key) {
+    this.tarefa = JSON.stringify(this.tarefa);
+    this.tarefa = JSON.parse(this.tarefa);
+    TarefaService.atualiza(
+     this.tarefa,
+     () => {
+      this.$q
+       .dialog({
+        title: "SUCESSO",
+        message: `Dados alterados com sucesso!`,
+       })
+       .onOk(() => {
+        this.todas();
+        this.tab = "lista";
+       });
+     },
+     (e) => {
+      this.limpa();
+      console.error("Erro ao atualizar:", e);
+     }
+    );
+   }
   },
  },
 };

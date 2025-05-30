@@ -14,6 +14,7 @@ import {
   orderByChild,
   equalTo,
   get,
+  update,
 } from "@firebase/database";
 
 import FBService from "./FBService";
@@ -65,6 +66,14 @@ class TarefaService {
 
   static exclui(k, cbOk, cbNotOk) {
     remove(ref(FBService.database, `tarefas/${k.key}`))
+      .then(() => cbOk())
+      .catch((error) => cbNotOk(error));
+  }
+
+  static atualiza(tarefa, cbOk, cbNotOk) {
+    let k = tarefa.key;
+    delete tarefa.key;
+    update(ref(FBService.database, `tarefas/${k}`), tarefa)
       .then(() => cbOk())
       .catch((error) => cbNotOk(error));
   }

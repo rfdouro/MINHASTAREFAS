@@ -1,4 +1,4 @@
-import "./assets/main.css";
+//import "./assets/main.css";
 
 import { createApp } from "vue";
 
@@ -9,6 +9,8 @@ import "@quasar/extras/roboto-font/roboto-font.css";
 import "@quasar/extras/material-icons/material-icons.css";
 
 import "quasar/src/css/index.sass";
+
+import "@/styles/main.scss";
 
 import App from "./App.vue";
 import router from "./router";

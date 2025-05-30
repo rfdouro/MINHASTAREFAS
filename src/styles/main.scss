@@ -1,0 +1,149 @@
+fieldset{
+ border: 2px solid var(--q-color-primary); 
+ border-radius: 5px; 
+ padding-left: 10px; 
+ padding-right: 10px; 
+ padding-top: 2px; 
+ padding-bottom: 2px;
+}
+
+fieldset > legend {
+ border: 2px solid var(--q-color-primary); 
+ border-radius: 5px; 
+ padding-left: 10px; 
+ padding-right: 10px; 
+ padding-top: 2px; 
+ padding-bottom: 2px;
+ /*background-color: var(--f7-theme-color);
+ color: var(--f7-color-white);*/
+}
+
+h1, h2, h3{
+ text-align: center;
+ font-size: 2.5em;
+ padding-bottom: 10px;
+ border-bottom: 2px solid var(--q-color-primary); 
+}
+
+
+/*
+o padding do menu pode ser ajustado pelas propriedades
+header-inset-level
+e 
+content-inset-level
+*/
+/*ajusta o avatar do menu lateral - baseado em material icon*/
+.q-drawer .q-expansion-item__container .q-item__section--avatar *{
+ text-align: center !important;
+ padding-left: 7px;
+}
+.q-drawer .q-expansion-item .q-item__section .q-avatar{
+ margin-left: -15px !important; 
+}
+/*
+deixo os 'cantos' dos elementos
+*/
+*{
+ border-radius: 0 !important;
+}
+/*
+ajuste no botão para não ficar com maiúsculas - que é padrão material design
+*/
+.q-btn{
+ text-transform: none;
+}
+/*
+padding personalizado para colunas (grid)
+*/
+[class^="col"]{
+ padding: 5px;
+}
+
+
+.q-drawer{
+ width: 70px !important;
+ transition: 0.15s;
+}
+.q-drawer:hover{
+ width: 300px !important;
+}
+/*ajustes para não quebrar linha no item do menu lateral*/
+.q-drawer .q-list .q-expansion-item{
+ white-space: nowrap;
+}
+.q-drawer .q-expansion-item__content .q-card__section{
+ /* display: block; */
+ white-space: normal;
+}
+.q-page-container {
+ /*padding-left:70px!important;*/
+}
+
+@media(max-width:640px){
+ .q-drawer{
+  width: 250px !important;
+  top: 0px;
+ }
+ .q-drawer:hover{
+  width: 250px !important;
+ }
+ .q-page-container{
+  padding-left: 0px !important;
+ }
+}
+
+
+/*
+ajustes para cor de tabela
+com linha e hover
+*/
+.q-table tbody td:before {
+ background: rgba(100, 100, 100, 0.05);
+}
+.body--dark .q-table tbody td:before {
+ background: rgba(255, 255, 255, 0.05);
+}
+.body--dark .q-table--bordered {
+ border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.q-table--horizontal-separator th, .q-table--horizontal-separator td
+{
+ border-bottom-width: 1px !important;
+}
+.body--dark .q-table--horizontal-separator th, .body--dark .q-table--horizontal-separator td
+{
+ border-bottom-width: 1px !important;
+ border-color: rgba(255, 255, 255, 0.05);
+}
+
+/**
+acerto para select no dark mode
+*/
+.q-field--dark .q-field__input select,
+.q-field--dark .q-field__native select,
+.q-field--dark .q-field__prefix select,
+.q-field--dark .q-field__suffix select{
+ color: #fff;
+}
+/*.q-field--dark .q-field__input select:hover,
+.q-field--dark .q-field__native select:hover,
+.q-field--dark .q-field__prefix select:hover,
+.q-field--dark .q-field__suffix select:hover{
+ color: var(--q-color-primary);
+}*/
+
+.q-field--dark .q-field__input select option,
+.q-field--dark .q-field__native select option,
+.q-field--dark .q-field__prefix select option,
+.q-field--dark .q-field__suffix select option{
+ background: var(--q-color-dark);
+ color: #FFF;
+ height: 50px;
+}
+
+/*select option {
+    margin: 40px;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}*/
