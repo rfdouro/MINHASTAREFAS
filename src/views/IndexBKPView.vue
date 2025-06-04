@@ -203,11 +203,10 @@
 <script>
 import FBService from "@/services/FBService.js";
 import AuthService from "@/services/AuthService.js";
+import TarefaService from "@/services/TarefaService.js";
 import DropDownUser from "@/components/DropDownUser.vue";
 
 import TarefaServiceStore from "@/services/TarefaServiceStore";
-
-import { toRaw } from "vue";
 
 export default {
  components: {
@@ -228,11 +227,13 @@ export default {
  beforeCreate() {},
  mounted() {
   this.$q.loading.show();
-  FBService.init(); // inicializa o Firebase
+  FBService.init();// inicializa o Firebase
+  TarefaServiceStore.init();
+  TarefaServiceStore.recupera();
   AuthService.verificaLogado(
    () => {
     this.user = AuthService.user;
-    TarefaServiceStore.user = AuthService.user;
+    TarefaService.user = AuthService.user;
     this.todas();
     this.$q.loading.hide();
    },
@@ -240,7 +241,7 @@ export default {
     this.$router.push({ path: "/login" });
    }
   );
-  TarefaServiceStore.init((dados) => {
+  TarefaService.init((dados) => {
    this.tarefas = [];
   });
  },
@@ -262,13 +263,17 @@ export default {
   todas() {
    this.limpa();
    this.$q.loading.show();
-   TarefaServiceStore.recupera((dados) => {
-    this.tarefas = [];
-    if (dados) {
-     this.tarefas = dados;
-    }
-    this.$q.loading.hide();
-   });
+   TarefaService.recupera(
+    (dados) => {
+     this.tarefas = [];
+     if (dados) {
+      this.tarefas = dados;
+     }
+     this.$q.loading.hide();
+    },
+    null,
+    "dataLimite"
+   );
   },
   sair() {
    AuthService.deslogar(() => {
@@ -276,9 +281,8 @@ export default {
    });
   },
   cadTarefa() {
-   this.tarefa.concluida = false;
-   TarefaServiceStore.cadastra(
-    toRaw(this.tarefa),
+   TarefaService.cadastra(
+    this.tarefa,
     () => {
      this.$q
       .dialog({
@@ -300,8 +304,6 @@ export default {
    );
   },
   exclui(k) {
-   k = JSON.parse(JSON.stringify(k));
-   console.log("Excluindo tarefa:", k);
    this.$q
     .dialog({
      title: "ATENÇÃO",
@@ -313,7 +315,7 @@ export default {
      class: "bg-red text-white",
     })
     .onOk(() => {
-     TarefaServiceStore.exclui(
+     TarefaService.exclui(
       k,
       () => {
        this.$q
@@ -337,7 +339,7 @@ export default {
    if (this.tarefa.key) {
     this.tarefa = JSON.stringify(this.tarefa);
     this.tarefa = JSON.parse(this.tarefa);
-    TarefaServiceStore.atualiza(
+    TarefaService.atualiza(
      this.tarefa,
      () => {
       this.$q

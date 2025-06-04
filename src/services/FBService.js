@@ -15,12 +15,14 @@ import {
   onAuthStateChanged,
   signOut,
 } from "@firebase/auth"; // "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+import { getFirestore } from "@firebase/firestore";
 
 class FBService {
   static fbconf = firebaseConfig.firebaseConfig;
   static appfb = null;
   static database = null;
   static auth = null;
+  static databaseStore = null;
 
   static init() {
     // Inicializa o Firebase
@@ -28,6 +30,7 @@ class FBService {
       FBService.appfb = initializeApp(FBService.fbconf);
       FBService.database = getDatabase(FBService.appfb);
       FBService.auth = getAuth(FBService.appfb);
+      FBService.databaseStore = getFirestore(FBService.appfb);
     }
   }
 }

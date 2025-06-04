@@ -13,6 +13,7 @@
     "@firebase/app": "^0.12.3",
     "@firebase/auth": "^1.10.4",
     "@firebase/database": "^1.0.17",
+    "@firebase/firestore": "^4.7.16",
     "@quasar/extras": "^1.16.17",
     "@vite-pwa/assets-generator": "^1.0.0",
     "minhastarefas": "file:",
