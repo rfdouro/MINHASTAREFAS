@@ -49,7 +49,6 @@
          <q-item-label caption
           >{{ t.descricao }}<br />
           <span class="text-primary">
-           {{ t.dataLimite }}
            {{ t.dataLimite ? "Vencimento: " : "Sem data limite" }}
            {{
             new Date(`${t.dataLimite} 00:00:00 GMT-0300`).toLocaleDateString(
