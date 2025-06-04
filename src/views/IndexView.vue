@@ -47,21 +47,23 @@
         <q-item-section>
          <q-item-label>{{ t.titulo }}</q-item-label>
          <q-item-label caption
-          >{{ t.descricao }}<br/>
+          >{{ t.descricao }}<br />
           <span class="text-primary">
-            {{ t.dataLimite
-             ? "Vencimento: "
-             : "Sem data limite" }}
-          {{
-           new Date(`${t.dataLimite} 00:00:00 GMT-0300`).toLocaleDateString("pt-BR", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-           })
-          }}</span>
-          </q-item-label
-         >
+           {{ t.dataLimite }}
+           {{ t.dataLimite ? "Vencimento: " : "Sem data limite" }}
+           {{
+            new Date(`${t.dataLimite} 00:00:00 GMT-0300`).toLocaleDateString(
+             "pt-BR",
+             {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+             }
+            )
+           }}</span
+          >
+         </q-item-label>
         </q-item-section>
         <q-item-section side class="gt-xs">
          <q-btn-group push>
@@ -228,6 +230,8 @@ export default {
   AuthService.verificaLogado(
    () => {
     this.user = AuthService.user;
+    TarefaService.user = AuthService.user;
+    this.todas();
     this.$q.loading.hide();
    },
    () => {
@@ -237,7 +241,6 @@ export default {
   TarefaService.init((dados) => {
    this.tarefas = [];
   });
-  this.todas();
  },
  methods: {
   handleSwipe({ evt, ...newInfo }) {
@@ -263,7 +266,7 @@ export default {
      this.tarefas = dados;
     }
     this.$q.loading.hide();
-   });
+   }, null, "dataLimite");
   },
   sair() {
    AuthService.deslogar(() => {
