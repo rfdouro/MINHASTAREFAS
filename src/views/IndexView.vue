@@ -45,8 +45,23 @@
         v-bind:key="t.key"
        >
         <q-item-section>
-         <q-item-label>{{ t.descricao }}</q-item-label>
-         <q-item-label caption>{{ t.dataCadastro }}</q-item-label>
+         <q-item-label>{{ t.titulo }}</q-item-label>
+         <q-item-label caption
+          >{{ t.descricao }}<br/>
+          <span class="text-primary">
+            {{ t.dataLimite
+             ? "Vencimento: "
+             : "Sem data limite" }}
+          {{
+           new Date(`${t.dataLimite} 00:00:00 GMT-0300`).toLocaleDateString("pt-BR", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+           })
+          }}</span>
+          </q-item-label
+         >
         </q-item-section>
         <q-item-section side class="gt-xs">
          <q-btn-group push>
@@ -96,11 +111,27 @@
        <q-input
         filled
         type="text"
+        v-model="tarefa.titulo"
+        label="Título *"
+        hint="Título da tarefa"
+        lazy-rules
+        :rules="[(val) => (val && val.length > 0) || 'Digite um título']"
+       ></q-input>
+       <q-input
+        filled
+        type="text"
         v-model="tarefa.descricao"
         label="Descrição *"
         hint="Descrição da tarefa"
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'Digite uma descrição']"
+       ></q-input>
+       <q-input
+        filled
+        type="date"
+        v-model="tarefa.dataLimite"
+        label="Data limite *"
+        hint="Data limite"
        ></q-input>
        <div>
         <q-btn label="Salvar" color="primary" @click="cadTarefa"></q-btn>
@@ -120,6 +151,15 @@
      <q-card-section class="q-pt-none">
       <div class="q-gutter-md">
        <q-input
+        filled
+        type="text"
+        v-model="tarefa.titulo"
+        label="Título *"
+        hint="Título da tarefa"
+        lazy-rules
+        :rules="[(val) => (val && val.length > 0) || 'Digite um título']"
+       ></q-input>
+       <q-input
         color="white"
         filled
         type="text"
@@ -128,6 +168,13 @@
         hint="Descrição da tarefa"
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'Digite uma descrição']"
+       ></q-input>
+       <q-input
+        filled
+        type="date"
+        v-model="tarefa.dataLimite"
+        label="Data limite *"
+        hint="Data limite"
        ></q-input>
       </div>
      </q-card-section>
@@ -167,6 +214,7 @@ export default {
    user: null,
    tab: "lista",
    tarefa: {
+    titulo: "",
     descricao: "",
    },
    tarefas: [],
@@ -199,6 +247,7 @@ export default {
   },
   limpa() {
    this.tarefa = {
+    titulo: "",
     descricao: "",
    };
   },

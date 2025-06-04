@@ -53,8 +53,11 @@ class TarefaService {
     const novaTarefaRef = push(TarefaService.tarefasRef);
 
     set(novaTarefaRef, {
+      titulo: tarefa.titulo,
       descricao: tarefa.descricao,
+      dataLimite: tarefa.dataLimite,
       dataCadastro: new Date().toISOString(),
+      dataAtualiza: new Date().toISOString(),
     })
       .then(() => {
         cbOk();
@@ -73,6 +76,8 @@ class TarefaService {
   static atualiza(tarefa, cbOk, cbNotOk) {
     let k = tarefa.key;
     delete tarefa.key;
+    tarefa.dataLimite = tarefa.dataLimite,
+    tarefa.dataAtualiza = new Date().toISOString();
     update(ref(FBService.database, `tarefas/${k}`), tarefa)
       .then(() => cbOk())
       .catch((error) => cbNotOk(error));
