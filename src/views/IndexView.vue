@@ -43,6 +43,7 @@
         v-ripple="false"
         v-for="t in tarefas"
         v-bind:key="t.key"
+        class="bg-blue-1 q-pa-lg"
        >
         <q-item-section>
          <q-item-label>{{ t.titulo }}</q-item-label>
@@ -111,6 +112,7 @@
       <div class="q-gutter-md">
        <q-input
         filled
+        class="q-mb-lg"
         type="text"
         v-model="tarefa.titulo"
         label="Título *"
@@ -120,6 +122,7 @@
        ></q-input>
        <q-input
         filled
+        class="q-mb-lg"
         type="text"
         v-model="tarefa.descricao"
         label="Descrição *"
@@ -129,6 +132,7 @@
        ></q-input>
        <q-input
         filled
+        class="q-mb-lg"
         type="date"
         v-model="tarefa.dataLimite"
         label="Data limite *"
