@@ -79,8 +79,8 @@ padding personalizado para colunas (grid)
   /*padding-left:70px!important;*/
 }
 
-/* Para dispositivos móveis (ex: até 640px) */
-@media (max-width: 640px) {
+/* Para dispositivos móveis (ex: até 600px) */
+@media (max-width: 600px) {
   .q-drawer {
     width: 250px !important;
     top: 0px;
@@ -93,11 +93,11 @@ padding personalizado para colunas (grid)
   }
 
   /* Aplique o estilo à fonte do corpo */
-  * {
-    font-size: x-large !important;
-    font-weight: 500 !important;
+  .q-page-container * {
+    font-size: large !important;
+    font-weight: 400 !important;
     letter-spacing: 2px;
-    font-family: sans-serif;
+    
     p {
       padding: 5px;
     }

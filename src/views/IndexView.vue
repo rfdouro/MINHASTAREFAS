@@ -6,7 +6,7 @@
      <q-avatar>
       <img src="@/assets/mytasks.png" />
      </q-avatar>
-     Tarefas
+     Minhas Tarefas
     </q-toolbar-title>
 
     <DropDownUser
@@ -64,6 +64,19 @@
            }}</span
           >
          </q-item-label>
+         <p side class="lt-sm">
+          <q-btn-group push>
+           <q-btn
+            icon="update"
+            color="green"
+            @click="
+             tarefa = t;
+             diagaltera = true;
+            "
+           ></q-btn>
+           <q-btn icon="delete" color="red" @click="exclui(t)"></q-btn>
+          </q-btn-group>
+         </p>
         </q-item-section>
         <q-item-section side class="gt-xs">
          <q-btn-group push>
@@ -82,19 +95,6 @@
            color="red"
            @click="exclui(t)"
           ></q-btn>
-         </q-btn-group>
-        </q-item-section>
-        <q-item-section side class="lt-sm">
-         <q-btn-group push>
-          <q-btn
-           icon="update"
-           color="green"
-           @click="
-            tarefa = t;
-            diagaltera = true;
-           "
-          ></q-btn>
-          <q-btn icon="delete" color="red" @click="exclui(t)"></q-btn>
          </q-btn-group>
         </q-item-section>
        </q-item>
